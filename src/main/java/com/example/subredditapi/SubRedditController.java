@@ -15,11 +15,9 @@ import java.util.List;
 public class SubRedditController {
 
     private final ISubRedditRepo repo;
-    private KafkaTemplate<String,String> kafkaTemplate;
 
-    public SubRedditController(ISubRedditRepo repo, KafkaTemplate<String,String> kafkaTemplate){
+    public SubRedditController(ISubRedditRepo repo){
         this.repo = repo;
-        this.kafkaTemplate = kafkaTemplate;
     }
 
     @CrossOrigin(origins = {"http://localhost:8083","http://localhost:9080","http://localhost:8080"})
@@ -40,7 +38,6 @@ public class SubRedditController {
     @CrossOrigin(origins = {"http://localhost:8083","http://localhost:9080","http://localhost:8080"})
     @PostMapping("/")
     public SubReddit postSubReddit(@RequestBody SubReddit subReddit){
-        kafkaTemplate.send("topic_1", subReddit.getName());
         return repo.save(subReddit);
     }
 
